@@ -34,6 +34,11 @@ public class Spojeni {
 
     public void ulozitKnihy(Map<String, Knihy> knihy) {
         try {
+            String sqlDeleteRoman = "DELETE FROM Roman;";
+            String sqlDeleteUcebnice = "DELETE FROM Ucebnice;";
+            Statement stmt = spojeni.createStatement();
+            stmt.execute(sqlDeleteRoman);
+            stmt.execute(sqlDeleteUcebnice);
             PreparedStatement psRoman = spojeni.prepareStatement("INSERT INTO Roman (nazev, autor, rok, zanr, dostupnost) VALUES (?, ?, ?, ?, ?)");
             PreparedStatement psUcebnice = spojeni.prepareStatement("INSERT INTO Ucebnice (nazev, autor, rok, rocnik, dostupnost) VALUES (?, ?, ?, ?, ?)");
 

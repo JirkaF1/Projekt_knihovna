@@ -309,16 +309,39 @@ public class Test {
 
 
     private static void nacistKnihuZeSouboru() {
-        System.out.print("Zadejte název knihy, kterou chcete načíst ze souboru: ");
-        String nazev = scanner.nextLine();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(nazev + ".txt"))) {
+        System.out.print("Zadejte název souboru: ");
+        String nazevSouboru = scanner.nextLine();
+        try (BufferedReader reader = new BufferedReader(new FileReader(nazevSouboru + ".txt"))) {
             String line = reader.readLine();
-            System.out.println("Načtené informace o knize z souboru:");
-            System.out.println(line);
-        } 
+            VlozitDoDatabaze(line);
+        }
         catch (IOException e) {
-            System.out.println("Nepodařilo se načíst informace o knize: " + e.getMessage());
+            System.out.println("Nepodařilo se načíst soubor: " + e.getMessage());
+        }
+    }
+
+
+    private static void VlozitDoDatabaze(String data) {
+        try {
+            String[] parts = data.split(", ");
+            String nazev = parts[0].split(": ")[1].trim();
+            String autor = parts[1].split(": ")[1].trim();
+            int rokVydani = Integer.parseInt(parts[2].split(": ")[1].trim());
+            boolean dostupnost = "Dostupná".equals(parts[3].split(": ")[1].trim());
+            String Typ = parts[4].split(": ")[0].trim();
+            if (Typ.equals("Žánr")) {
+                String zanr = parts[4].split(": ")[1].trim();
+                Roman roman = new Roman(nazev, autor, rokVydani, zanr, dostupnost);
+                databaze.addKnihy(roman);
+                System.out.println("Přidáno: " + roman);
+            } else if (Typ.equals("Ročník")) {
+                int rocnik = Integer.parseInt(parts[4].split(": ")[1].trim());
+                Ucebnice ucebnice = new Ucebnice(nazev, autor, rokVydani, rocnik, dostupnost);
+                databaze.addKnihy(ucebnice);
+                System.out.println("Přidáno: " + ucebnice);
+            }
+        } catch (Exception e) {
+            System.out.println("Chyba při vkládání do databáze: " + e.getMessage());
         }
     }
 }
