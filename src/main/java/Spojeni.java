@@ -26,7 +26,6 @@ public class Spojeni {
             String sqlUcebnice = "CREATE TABLE IF NOT EXISTS Ucebnice (nazev TEXT, autor TEXT, rok INT, rocnik INT, dostupnost BOOLEAN);";
             stmt.execute(sqlRoman);
             stmt.execute(sqlUcebnice);
-            System.out.println("Tabulky byly vytvořeny, pokud neexistují.");
         } 
         catch (SQLException e) {
             System.out.println("Chyba při vytváření tabulek: " + e.getMessage());
